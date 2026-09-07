@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Overhead Form View -->
+    <record id="view_toptech_project_overhead_form" model="ir.ui.view">
+        <field name="name">toptech.project.overhead.form</field>
+        <field name="model">toptech.project.overhead</field>
+        <field name="arch" type="xml">
+            <form string="Monthly Overhead Pool">
+                <header>
+                    <button name="action_open_allocation_wizard" string="Run Allocation Engine" type="object" class="btn-primary" icon="fa-tasks"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" icon="fa-dollar" disabled="1">
+                            <field name="total_overhead" widget="statinfo" string="Total Pool"/>
+                        </button>
+                        <button class="oe_stat_button" icon="fa-check-circle" disabled="1">
+                            <field name="allocated_total" widget="statinfo" string="Allocated"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="Overhead Name (e.g. August 2026 Monthly Pool)..."/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Period &amp; Currency">
+                            <field name="date_start"/>
+                            <field name="date_end"/>
+                            <field name="currency_id" groups="base.group_multi_currency"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group string="Monthly Overhead Components">
+                            <field name="rent" widget="monetary"/>
+                            <field name="electricity" widget="monetary"/>
+                            <field name="internet" widget="monetary"/>
+                            <field name="office_expenses" widget="monetary"/>
+                            <field name="administration" widget="monetary"/>
+                            <field name="management" widget="monetary"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group string="Allocation Summary">
+                            <field name="total_overhead" widget="monetary"/>
+                            <field name="allocated_total" widget="monetary"/>
+                            <field name="unallocated_balance" widget="monetary" decoration-danger="unallocated_balance &gt; 0"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Project Overhead Allocations" name="allocations">
+                            <field name="allocation_ids">
+                                <list editable="bottom">
+                                    <field name="project_id"/>
+                                    <field name="allocation_method"/>
+                                    <field name="allocation_percentage"/>
+                                    <field name="allocated_amount" widget="monetary"/>
+                                    <field name="cost_type"/>
+                                    <field name="notes"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Notes" name="notes">
+                            <field name="notes" placeholder="Notes regarding overhead pool calculations..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Overhead List View -->
+    <record id="view_toptech_project_overhead_list" model="ir.ui.view">
+        <field name="name">toptech.project.overhead.list</field>
+        <field name="model">toptech.project.overhead</field>
+        <field name="arch" type="xml">
+            <list string="Monthly Overheads">
+                <field name="name"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
+                <field name="rent" widget="monetary"/>
+                <field name="electricity" widget="monetary"/>
+                <field name="internet" widget="monetary"/>
+                <field name="office_expenses" widget="monetary"/>
+                <field name="administration" widget="monetary"/>
+                <field name="management" widget="monetary"/>
+                <field name="total_overhead" widget="monetary"/>
+                <field name="allocated_total" widget="monetary"/>
+                <field name="unallocated_balance" widget="monetary"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Allocation List Standalone View -->
+    <record id="view_toptech_project_overhead_allocation_list" model="ir.ui.view">
+        <field name="name">toptech.project.overhead.allocation.list</field>
+        <field name="model">toptech.project.overhead.allocation</field>
+        <field name="arch" type="xml">
+            <list string="Overhead Allocations" editable="bottom">
+                <field name="overhead_id"/>
+                <field name="project_id"/>
+                <field name="allocation_method"/>
+                <field name="allocation_percentage"/>
+                <field name="allocated_amount" widget="monetary"/>
+                <field name="cost_type"/>
+                <field name="notes"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Actions -->
+    <record id="action_toptech_project_overhead" model="ir.actions.act_window">
+        <field name="name">Monthly Overheads</field>
+        <field name="res_model">toptech.project.overhead</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_toptech_project_overhead_allocation" model="ir.actions.act_window">
+        <field name="name">Overhead Allocations</field>
+        <field name="res_model">toptech.project.overhead.allocation</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

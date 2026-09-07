@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_monthly_cost_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="text-center mb-4">
+                            <h2 style="color: #1f4e78; font-weight: bold;">TopTech Monthly Cost Breakdown (Burn-Rate Report)</h2>
+                            <h4><span t-field="doc.name"/> (<span t-field="doc.reference"/>)</h4>
+                        </div>
+
+                        <table class="table table-bordered table-sm mt-3">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Month / Year</th>
+                                    <th>Date</th>
+                                    <th class="text-end">Salary Cost</th>
+                                    <th class="text-end">Expense Cost</th>
+                                    <th class="text-end">Overhead Cost</th>
+                                    <th class="text-end">Total Monthly Cost</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="doc.monthly_cost_ids" t-as="m">
+                                    <tr>
+                                        <td><span t-field="m.month_name"/></td>
+                                        <td><span t-field="m.month_date"/></td>
+                                        <td class="text-end"><span t-field="m.salary_cost" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                                        <td class="text-end"><span t-field="m.expense_cost" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                                        <td class="text-end"><span t-field="m.overhead_cost" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                                        <td class="text-end fw-bold"><span t-field="m.total_cost" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

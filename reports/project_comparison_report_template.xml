@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_project_comparison_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <div class="text-center mb-4">
+                        <h2 style="color: #1f4e78; font-weight: bold;">TopTech Side-by-Side Project Comparison Report</h2>
+                        <p class="text-muted">Generated on <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/></p>
+                    </div>
+
+                    <table class="table table-bordered table-sm mt-3">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Financial Metric / Metric</th>
+                                <t t-foreach="docs" t-as="prj">
+                                    <th class="text-center"><span t-field="prj.name"/><br/><small class="text-muted">(<span t-field="prj.reference"/>)</small></th>
+                                </t>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="fw-bold">Client Name</td>
+                                <t t-foreach="docs" t-as="prj">
+                                    <td class="text-center"><span t-field="prj.client_name"/></td>
+                                </t>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold">Status</td>
+                                <t t-foreach="docs" t-as="prj">
+                                    <td class="text-center"><span t-field="prj.status"/></td>
+                                </t>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold">Duration (Months)</td>
+                                <t t-foreach="docs" t-as="prj">
+                                    <td class="text-center"><span t-field="prj.duration_months"/></td>
+                                </t>
+                            </tr>
+                            <tr class="table-primary fw-bold">
+                                <td>Contract Value</td>
+                                <t t-foreach="docs" t-as="prj">
+                                    <td class="text-end"><span t-field="prj.contract_value" t-options='{"widget": "monetary", "display_currency": prj.currency_id}'/></td>
+                                </t>
+                            </tr>
+                            <tr>
+                                <td>Resource Cost</td>
+                                <t t-foreach="docs" t-as="prj">
+                                    <td class="text-end"><span t-field="prj.resource_cost" t-options='{"widget": "monetary", "display_currency": prj.currency_id}'/></td>
+                                </t>
+                            </tr>
+                            <tr>
+                                <td>Direct Expenses</td>
+                                <t t-foreach="docs" t-as="prj">
+                                    <td class="text-end"><span t-field="prj.expense_cost" t-options='{"widget": "monetary", "display_currency": prj.currency_id}'/></td>
+                                </t>
+                            </tr>
+                            <tr>
+                                <td>Allocated Overhead</td>
+                                <t t-foreach="docs" t-as="prj">
+                                    <td class="text-end"><span t-field="prj.overhead_cost" t-options='{"widget": "monetary", "display_currency": prj.currency_id}'/></td>
+                                </t>
+                            </tr>
+                            <tr class="table-danger fw-bold">
+                                <td>Total Cost</td>
+                                <t t-foreach="docs" t-as="prj">
+                                    <td class="text-end"><span t-field="prj.total_cost" t-options='{"widget": "monetary", "display_currency": prj.currency_id}'/></td>
+                                </t>
+                            </tr>
+                            <tr class="table-success fw-bold">
+                                <td>Net Profit</td>
+                                <t t-foreach="docs" t-as="prj">
+                                    <td class="text-end"><span t-field="prj.project_profit" t-options='{"widget": "monetary", "display_currency": prj.currency_id}'/></td>
+                                </t>
+                            </tr>
+                            <tr class="table-info fw-bold">
+                                <td>Profit Margin (%)</td>
+                                <t t-foreach="docs" t-as="prj">
+                                    <td class="text-end"><span t-field="prj.project_margin"/>%</td>
+                                </t>
+                            </tr>
+                            <tr>
+                                <td>Cost Variance (Actual vs Planned)</td>
+                                <t t-foreach="docs" t-as="prj">
+                                    <td class="text-end"><span t-field="prj.total_cost_variance" t-options='{"widget": "monetary", "display_currency": prj.currency_id}'/></td>
+                                </t>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

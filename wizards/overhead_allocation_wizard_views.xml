@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_toptech_overhead_allocation_wizard_form" model="ir.ui.view">
+        <field name="name">toptech.overhead.allocation.wizard.form</field>
+        <field name="model">toptech.overhead.allocation.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Run Overhead Allocation Engine">
+                <sheet>
+                    <group>
+                        <group string="Overhead Source">
+                            <field name="overhead_id" readonly="1"/>
+                            <field name="cost_type"/>
+                        </group>
+                        <group string="Allocation Strategy">
+                            <field name="allocation_method"/>
+                        </group>
+                    </group>
+                    <group string="Target Active Projects">
+                        <field name="project_ids" widget="many2many_tags" placeholder="Select target projects... (Defaults to all active)"/>
+                    </group>
+                    <p class="text-muted">
+                        Running the allocation engine will compute and update overhead shares for all selected projects according to the chosen formula.
+                    </p>
+                </sheet>
+                <footer>
+                    <button string="Run Allocation Engine" type="object" name="action_confirm_allocation" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

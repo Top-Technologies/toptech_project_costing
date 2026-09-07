@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_toptech_project_comparison_wizard_form" model="ir.ui.view">
+        <field name="name">toptech.project.comparison.wizard.form</field>
+        <field name="model">toptech.project.comparison.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Side-by-Side Project Comparison">
+                <sheet>
+                    <group>
+                        <group string="Format Options">
+                            <field name="report_type" widget="radio"/>
+                        </group>
+                    </group>
+                    <group string="Select Projects to Compare Side-by-Side">
+                        <field name="project_ids" widget="many2many_tags" placeholder="Select projects..."/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Generate Side-by-Side Report" type="object" name="action_generate_report" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_toptech_project_comparison_wizard" model="ir.actions.act_window">
+        <field name="name">Project Comparison Report</field>
+        <field name="res_model">toptech.project.comparison.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

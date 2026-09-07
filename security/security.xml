@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- Category -->
+        <record id="module_category_project_costing" model="ir.module.category">
+            <field name="name">Project Costing</field>
+            <field name="description">Manage project costs, overhead allocation, and profitability</field>
+            <field name="sequence">20</field>
+        </record>
+
+        <!-- Group 1: User (Read-only) -->
+        <record id="group_project_costing_user" model="res.groups">
+            <field name="name">User (Read Only)</field>
+            <field name="comment">Read-only access to projects and costing reports.</field>
+        </record>
+
+        <!-- Group 2: Project Manager -->
+        <record id="group_project_costing_pm" model="res.groups">
+            <field name="name">Project Manager</field>
+            <field name="implied_ids" eval="[(4, ref('group_project_costing_user'))]"/>
+            <field name="comment">Create and manage costing for assigned projects.</field>
+        </record>
+
+        <!-- Group 3: Finance / Admin -->
+        <record id="group_project_costing_finance" model="res.groups">
+            <field name="name">Finance / Admin</field>
+            <field name="implied_ids" eval="[(4, ref('group_project_costing_pm'))]"/>
+            <field name="comment">Manage salaries, expenses, overhead allocation engine, and cost calculations across all projects.</field>
+        </record>
+
+        <!-- Group 4: Management -->
+        <record id="group_project_costing_manager" model="res.groups">
+            <field name="name">Management</field>
+            <field name="implied_ids" eval="[(4, ref('group_project_costing_finance'))]"/>
+            <field name="comment">Full access to all projects, executive profitability, allocation overrides, and configuration.</field>
+        </record>
+
+        <!-- Automatically grant Management to Odoo System Administrators -->
+        <record id="base.group_system" model="res.groups">
+            <field name="implied_ids" eval="[(4, ref('group_project_costing_manager'))]"/>
+        </record>
+
+        <!-- Automatically grant User (Read Only) to Internal Users -->
+        <record id="base.group_user" model="res.groups">
+            <field name="implied_ids" eval="[(4, ref('group_project_costing_user'))]"/>
+        </record>
+
+        <!-- RECORD RULES -->
+        <!-- Project Manager Rule: Access only assigned projects -->
+        <record id="rule_project_costing_pm" model="ir.rule">
+            <field name="name">Project Manager Assigned Projects</field>
+            <field name="model_id" ref="model_toptech_project_costing"/>
+            <field name="domain_force">[('user_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_project_costing_pm'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- Finance / Admin & Management Rule: Access ALL projects -->
+        <record id="rule_project_costing_finance_manager" model="ir.rule">
+            <field name="name">Finance and Management All Projects</field>
+            <field name="model_id" ref="model_toptech_project_costing"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_project_costing_finance')), (4, ref('group_project_costing_manager'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <!-- Multi-Company Rule for Projects -->
+        <record id="rule_project_costing_company" model="ir.rule">
+            <field name="name">Project Costing Multi-Company</field>
+            <field name="model_id" ref="model_toptech_project_costing"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+    </data>
+</odoo>

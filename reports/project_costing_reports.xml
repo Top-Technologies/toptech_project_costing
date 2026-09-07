@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- 1. Project Profitability Report Action -->
+    <record id="action_report_project_profitability" model="ir.actions.report">
+        <field name="name">Project Profitability Report</field>
+        <field name="model">toptech.project.costing</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">toptech_project_costing.report_project_profitability_template</field>
+        <field name="report_file">toptech_project_costing.report_project_profitability_template</field>
+        <field name="binding_model_id" ref="model_toptech_project_costing"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- 2. Resource Cost Report Action -->
+    <record id="action_report_resource_cost" model="ir.actions.report">
+        <field name="name">Resource Cost Report</field>
+        <field name="model">toptech.project.costing</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">toptech_project_costing.report_resource_cost_template</field>
+        <field name="report_file">toptech_project_costing.report_resource_cost_template</field>
+        <field name="binding_model_id" ref="model_toptech_project_costing"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- 3. Monthly Cost Report Action -->
+    <record id="action_report_monthly_cost" model="ir.actions.report">
+        <field name="name">Monthly Cost Breakdown Report</field>
+        <field name="model">toptech.project.costing</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">toptech_project_costing.report_monthly_cost_template</field>
+        <field name="report_file">toptech_project_costing.report_monthly_cost_template</field>
+        <field name="binding_model_id" ref="model_toptech_project_costing"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- 4. Overhead Allocation Report Action -->
+    <record id="action_report_overhead_allocation" model="ir.actions.report">
+        <field name="name">Overhead Allocation Report</field>
+        <field name="model">toptech.project.overhead</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">toptech_project_costing.report_overhead_allocation_template</field>
+        <field name="report_file">toptech_project_costing.report_overhead_allocation_template</field>
+        <field name="binding_model_id" ref="model_toptech_project_overhead"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- 5. Support Profitability Report Action -->
+    <record id="action_report_support_profitability" model="ir.actions.report">
+        <field name="name">Support Profitability Report</field>
+        <field name="model">toptech.project.costing</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">toptech_project_costing.report_support_profitability_template</field>
+        <field name="report_file">toptech_project_costing.report_support_profitability_template</field>
+        <field name="binding_model_id" ref="model_toptech_project_costing"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- 6. Project Comparison Report Action -->
+    <record id="action_report_project_comparison" model="ir.actions.report">
+        <field name="name">Side-by-Side Project Comparison Report</field>
+        <field name="model">toptech.project.costing</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">toptech_project_costing.report_project_comparison_template</field>
+        <field name="report_file">toptech_project_costing.report_project_comparison_template</field>
+    </record>
+</odoo>

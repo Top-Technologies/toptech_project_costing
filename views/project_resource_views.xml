@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_toptech_project_resource_form" model="ir.ui.view">
+        <field name="name">toptech.project.resource.form</field>
+        <field name="model">toptech.project.resource</field>
+        <field name="arch" type="xml">
+            <form string="Project Resource Planning">
+                <sheet>
+                    <group>
+                        <group string="Resource Details">
+                            <field name="project_id"/>
+                            <field name="name"/>
+                            <field name="position"/>
+                            <field name="monthly_cost" widget="monetary"/>
+                            <field name="allow_over_allocation"/>
+                        </group>
+                        <group string="Allocation &amp; Duration">
+                            <field name="allocation_percentage"/>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                            <field name="number_of_months"/>
+                            <field name="cost_type"/>
+                        </group>
+                    </group>
+                    <group string="Cost Calculation">
+                        <group>
+                            <field name="planned_cost" widget="monetary"/>
+                        </group>
+                        <group>
+                            <field name="actual_cost" widget="monetary"/>
+                            <field name="resource_cost" widget="monetary" readonly="1"/>
+                        </group>
+                    </group>
+                    <field name="notes" placeholder="Resource allocation notes or contract details..."/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_toptech_project_resource_list" model="ir.ui.view">
+        <field name="name">toptech.project.resource.list</field>
+        <field name="model">toptech.project.resource</field>
+        <field name="arch" type="xml">
+            <list string="Project Resources" editable="bottom">
+                <field name="project_id"/>
+                <field name="name"/>
+                <field name="position"/>
+                <field name="monthly_cost" widget="monetary"/>
+                <field name="allocation_percentage"/>
+                <field name="number_of_months"/>
+                <field name="planned_cost" widget="monetary"/>
+                <field name="actual_cost" widget="monetary"/>
+                <field name="resource_cost" widget="monetary"/>
+                <field name="allow_over_allocation" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_toptech_project_resource_search" model="ir.ui.view">
+        <field name="name">toptech.project.resource.search</field>
+        <field name="model">toptech.project.resource</field>
+        <field name="arch" type="xml">
+            <search string="Search Project Resources">
+                <field name="name"/>
+                <field name="position"/>
+                <field name="project_id"/>
+                <group>
+                    <filter string="Project" name="group_project" context="{'group_by': 'project_id'}"/>
+                    <filter string="Resource Name" name="group_name" context="{'group_by': 'name'}"/>
+                    <filter string="Position" name="group_position" context="{'group_by': 'position'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_toptech_project_resource" model="ir.actions.act_window">
+        <field name="name">Project Resources</field>
+        <field name="res_model">toptech.project.resource</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_toptech_project_resource_search"/>
+    </record>
+</odoo>

@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Sequence -->
+    <record id="seq_toptech_project_costing" model="ir.sequence">
+        <field name="name">Project Costing Reference</field>
+        <field name="code">toptech.project.costing</field>
+        <field name="prefix">PRJ-</field>
+        <field name="padding">4</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+    <!-- Project Costing Form View -->
+    <record id="view_toptech_project_costing_form" model="ir.ui.view">
+        <field name="name">toptech.project.costing.form</field>
+        <field name="model">toptech.project.costing</field>
+        <field name="arch" type="xml">
+            <form string="Project Costing &amp; Profitability">
+                <header>
+                    <button name="action_cost_planning" string="Start Cost Planning" type="object" class="btn-primary" invisible="status != 'draft'"/>
+                    <button name="action_approve" string="Approve Project" type="object" class="btn-success" invisible="status != 'cost_planning'"/>
+                    <button name="action_start" string="Set In Progress" type="object" class="btn-primary" invisible="status != 'approved'"/>
+                    <button name="action_generate_monthly_cost" string="Generate Monthly Breakdown" type="object" class="btn-info" invisible="status not in ['approved', 'in_progress']"/>
+                    <button name="action_complete" string="Mark Completed" type="object" class="btn-success" invisible="status != 'in_progress'"/>
+                    <button name="action_support" string="Move to Support Phase" type="object" class="btn-warning" invisible="status != 'completed'"/>
+                    <button name="action_close" string="Close Project" type="object" class="btn-secondary" invisible="status not in ['completed', 'support']"/>
+                    <button name="action_reset_draft" string="Reset to Draft" type="object" class="btn-secondary" invisible="status == 'draft'"/>
+                    
+                    <field name="status" widget="statusbar" statusbar_visible="draft,cost_planning,approved,in_progress,completed,support,closed"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" icon="fa-clock-o">
+                            <field name="duration_months" widget="statinfo" string="Duration (Mos)"/>
+                        </button>
+                        <button class="oe_stat_button" icon="fa-usd">
+                            <field name="contract_value" widget="statinfo" string="Contract Value"/>
+                        </button>
+                        <button class="oe_stat_button" icon="fa-pie-chart">
+                            <field name="project_margin" widget="statinfo" string="Margin %"/>
+                        </button>
+                    </div>
+
+                    <widget name="web_ribbon" title="Over Budget" bg_color="bg-danger" invisible="not is_over_budget"/>
+                    <widget name="web_ribbon" title="Completed" bg_color="bg-success" invisible="status != 'completed'"/>
+
+                    <div class="oe_title">
+                        <label for="reference" class="oe_edit_only"/>
+                        <h1>
+                            <field name="reference" readonly="1"/>
+                        </h1>
+                        <label for="name" class="oe_edit_only"/>
+                        <h2>
+                            <field name="name" placeholder="Project Name (e.g. Dina ERP Implementation)..."/>
+                        </h2>
+                    </div>
+
+                    <group>
+                        <group string="Basic Information">
+                            <field name="client_name" placeholder="Client Company..."/>
+                            <field name="user_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="currency_id" groups="base.group_multi_currency"/>
+                        </group>
+                        <group string="Schedule &amp; Dates">
+                            <field name="start_date"/>
+                            <field name="planned_end_date"/>
+                            <field name="actual_end_date" invisible="status not in ['completed', 'closed']"/>
+                            <field name="duration_months"/>
+                            <field name="is_over_budget" invisible="1"/>
+                        </group>
+                    </group>
+
+                    <group string="Executive Financial Summary" name="financial_overview">
+                        <group string="Revenue &amp; Cost">
+                            <field name="contract_value" widget="monetary"/>
+                            <field name="total_cost" widget="monetary"/>
+                            <field name="project_profit" widget="monetary" decoration-success="project_profit &gt; 0" decoration-danger="project_profit &lt; 0"/>
+                            <field name="project_margin"/>
+                        </group>
+                        <group string="Cost Category Breakdown">
+                            <field name="resource_cost" widget="monetary"/>
+                            <field name="expense_cost" widget="monetary"/>
+                            <field name="overhead_cost" widget="monetary"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Resource Planning" name="resources">
+                            <field name="resource_ids">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                    <field name="position"/>
+                                    <field name="monthly_cost" widget="monetary"/>
+                                    <field name="allocation_percentage"/>
+                                    <field name="number_of_months"/>
+                                    <field name="planned_cost" widget="monetary"/>
+                                    <field name="actual_cost" widget="monetary"/>
+                                    <field name="resource_cost" widget="monetary"/>
+                                    <field name="allow_over_allocation" optional="hide"/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <page string="Direct Expenses" name="expenses">
+                            <field name="expense_ids">
+                                <list editable="bottom">
+                                    <field name="date"/>
+                                    <field name="expense_type"/>
+                                    <field name="description"/>
+                                    <field name="cost_type"/>
+                                    <field name="amount" widget="monetary"/>
+                                    <field name="planned_amount" widget="monetary" optional="show"/>
+                                    <field name="actual_amount" widget="monetary" optional="show"/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <page string="Overhead Allocations" name="overhead">
+                            <field name="overhead_allocation_ids" readonly="1">
+                                <list>
+                                    <field name="overhead_id"/>
+                                    <field name="allocation_method"/>
+                                    <field name="allocation_percentage"/>
+                                    <field name="allocated_amount" widget="monetary"/>
+                                    <field name="cost_type"/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <page string="Post-Implementation Support" name="support">
+                            <field name="support_ids">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                    <field name="support_start_date"/>
+                                    <field name="support_end_date"/>
+                                    <field name="number_of_months"/>
+                                    <field name="monthly_support_revenue" widget="monetary"/>
+                                    <field name="support_employee_name"/>
+                                    <field name="monthly_support_cost" widget="monetary"/>
+                                    <field name="support_overhead" widget="monetary"/>
+                                    <field name="total_support_revenue" widget="monetary"/>
+                                    <field name="total_support_cost" widget="monetary"/>
+                                    <field name="support_profit" widget="monetary"/>
+                                    <field name="support_margin"/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <page string="Monthly Cost Breakdown" name="monthly_breakdown">
+                            <button name="action_generate_monthly_cost" string="Auto-Generate Monthly Lines" type="object" class="btn-outline-primary mb-2"/>
+                            <field name="monthly_cost_ids">
+                                <list editable="bottom">
+                                    <field name="month_name"/>
+                                    <field name="month_date"/>
+                                    <field name="salary_cost" widget="monetary"/>
+                                    <field name="expense_cost" widget="monetary"/>
+                                    <field name="overhead_cost" widget="monetary"/>
+                                    <field name="total_cost" widget="monetary"/>
+                                    <field name="cost_type"/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <page string="Planned vs Actual Variance" name="variance">
+                            <group>
+                                <group string="Resource Cost Comparison">
+                                    <field name="planned_resource_cost"/>
+                                    <field name="actual_resource_cost"/>
+                                    <field name="resource_cost_variance"/>
+                                </group>
+                                <group string="Direct Expense Comparison">
+                                    <field name="planned_expense_cost"/>
+                                    <field name="actual_expense_cost"/>
+                                    <field name="expense_cost_variance"/>
+                                </group>
+                            </group>
+                            <group>
+                                <group string="Allocated Overhead Comparison">
+                                    <field name="planned_overhead_cost"/>
+                                    <field name="actual_overhead_cost"/>
+                                    <field name="overhead_cost_variance"/>
+                                </group>
+                                <group string="Total Cost &amp; Profit Variance">
+                                    <field name="planned_total_cost"/>
+                                    <field name="actual_total_cost"/>
+                                    <field name="total_cost_variance"/>
+                                    <field name="planned_profit"/>
+                                    <field name="actual_profit"/>
+                                    <field name="profit_variance"/>
+                                    <field name="planned_margin"/>
+                                    <field name="actual_margin"/>
+                                    <field name="margin_variance"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <page string="Notes &amp; Details" name="notes">
+                            <field name="notes" placeholder="Additional project specifications or contract notes..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Project Costing List View -->
+    <record id="view_toptech_project_costing_list" model="ir.ui.view">
+        <field name="name">toptech.project.costing.list</field>
+        <field name="model">toptech.project.costing</field>
+        <field name="arch" type="xml">
+            <list string="Projects" decoration-info="status == 'cost_planning'" decoration-warning="status == 'in_progress'" decoration-success="status == 'completed'" decoration-danger="is_over_budget">
+                <field name="reference"/>
+                <field name="name"/>
+                <field name="client_name"/>
+                <field name="user_id"/>
+                <field name="start_date"/>
+                <field name="planned_end_date"/>
+                <field name="duration_months"/>
+                <field name="contract_value" widget="monetary"/>
+                <field name="resource_cost" widget="monetary"/>
+                <field name="expense_cost" widget="monetary"/>
+                <field name="overhead_cost" widget="monetary"/>
+                <field name="total_cost" widget="monetary"/>
+                <field name="project_profit" widget="monetary"/>
+                <field name="project_margin"/>
+                <field name="is_over_budget" widget="boolean_toggle"/>
+                <field name="status" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Kanban View -->
+    <record id="view_toptech_project_costing_kanban" model="ir.ui.view">
+        <field name="name">toptech.project.costing.kanban</field>
+        <field name="model">toptech.project.costing</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="status">
+                <field name="id"/>
+                <field name="name"/>
+                <field name="client_name"/>
+                <field name="contract_value"/>
+                <field name="total_cost"/>
+                <field name="project_profit"/>
+                <field name="project_margin"/>
+                <field name="status"/>
+                <field name="is_over_budget"/>
+                <templates>
+                    <t t-name="card">
+                        <main class="p-2">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <strong class="h6 text-truncate mb-0"><field name="name"/></strong>
+                                <span class="badge rounded-pill bg-info"><field name="status"/></span>
+                            </div>
+                            <div class="text-muted small mb-2">
+                                <i class="fa fa-building-o me-1" title="Client"></i><field name="client_name"/>
+                            </div>
+                            <div class="row text-center mt-3 border-top pt-2">
+                                <div class="col-6 border-end">
+                                    <span class="text-muted small d-block">Contract</span>
+                                    <strong><field name="contract_value" widget="monetary"/></strong>
+                                </div>
+                                <div class="col-6">
+                                    <span class="text-muted small d-block">Total Cost</span>
+                                    <strong class="text-danger"><field name="total_cost" widget="monetary"/></strong>
+                                </div>
+                            </div>
+                            <div class="row text-center mt-2 border-top pt-2">
+                                <div class="col-6 border-end">
+                                    <span class="text-muted small d-block">Profit</span>
+                                    <strong class="text-success"><field name="project_profit" widget="monetary"/></strong>
+                                </div>
+                                <div class="col-6">
+                                    <span class="text-muted small d-block">Margin</span>
+                                    <strong class="text-primary"><field name="project_margin"/>%</strong>
+                                </div>
+                            </div>
+                        </main>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_toptech_project_costing_search" model="ir.ui.view">
+        <field name="name">toptech.project.costing.search</field>
+        <field name="model">toptech.project.costing</field>
+        <field name="arch" type="xml">
+            <search string="Search Projects">
+                <field name="name"/>
+                <field name="client_name"/>
+                <field name="reference"/>
+                <field name="user_id"/>
+                <filter string="Active Projects" name="active_projects" domain="[('status', 'in', ['cost_planning', 'approved', 'in_progress', 'support'])]"/>
+                <filter string="In Progress" name="in_progress" domain="[('status', '=', 'in_progress')]"/>
+                <filter string="Over Budget" name="over_budget" domain="[('is_over_budget', '=', True)]"/>
+                <filter string="Completed" name="completed" domain="[('status', '=', 'completed')]"/>
+                <separator/>
+                <group>
+                    <filter string="Status" name="group_status" context="{'group_by': 'status'}"/>
+                    <filter string="Client" name="group_client" context="{'group_by': 'client_name'}"/>
+                    <filter string="Project Manager" name="group_user" context="{'group_by': 'user_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Window Action -->
+    <record id="action_toptech_project_costing" model="ir.actions.act_window">
+        <field name="name">Projects Master</field>
+        <field name="res_model">toptech.project.costing</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="search_view_id" ref="view_toptech_project_costing_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first project costing master record!
+            </p>
+            <p>
+                Estimate project cost, allocate resources, manage overheads, and analyze total profit and margins.
+            </p>
+        </field>
+    </record>
+</odoo>

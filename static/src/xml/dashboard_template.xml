@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="toptech_project_costing.ProjectDashboard">
+        <div class="toptech_dashboard_container">
+            <!-- Header -->
+            <div class="toptech_dashboard_header">
+                <div>
+                    <h2><i class="fa fa-line-chart text-primary me-2"></i>TopTech Project Costing &amp; Profitability Executive Dashboard</h2>
+                    <div class="subtitle">Real-time cost tracking, overhead allocation &amp; margin analysis</div>
+                </div>
+                <div>
+                    <button class="btn btn-primary shadow-sm me-2" t-on-click="openNewProject">
+                        <i class="fa fa-plus me-1"></i> New Project
+                    </button>
+                </div>
+            </div>
+
+            <!-- KPI Cards Grid (10 KPIs) -->
+            <div class="toptech_kpi_grid">
+                <!-- 1. Total Projects -->
+                <div class="toptech_kpi_card kpi_blue">
+                    <div class="kpi_icon"><i class="fa fa-folder"></i></div>
+                    <div class="kpi_title">Total Projects</div>
+                    <div class="kpi_value"><t t-esc="state.kpi.total_projects"/></div>
+                    <div class="kpi_sub">Master projects registered</div>
+                </div>
+
+                <!-- 2. Active Projects -->
+                <div class="toptech_kpi_card kpi_emerald">
+                    <div class="kpi_icon"><i class="fa fa-play-circle"></i></div>
+                    <div class="kpi_title">Active Projects</div>
+                    <div class="kpi_value"><t t-esc="state.kpi.active_projects"/></div>
+                    <div class="kpi_sub">In planning, progress or support</div>
+                </div>
+
+                <!-- 3. Total Contract Value -->
+                <div class="toptech_kpi_card kpi_purple">
+                    <div class="kpi_icon"><i class="fa fa-dollar"></i></div>
+                    <div class="kpi_title">Total Contract Value</div>
+                    <div class="kpi_value"><t t-esc="formatCurrency(state.kpi.total_contract_value)"/></div>
+                    <div class="kpi_sub">Portfolio Revenue</div>
+                </div>
+
+                <!-- 4. Total Planned Cost -->
+                <div class="toptech_kpi_card kpi_amber">
+                    <div class="kpi_icon"><i class="fa fa-calculator"></i></div>
+                    <div class="kpi_title">Total Planned Cost</div>
+                    <div class="kpi_value"><t t-esc="formatCurrency(state.kpi.total_planned_cost)"/></div>
+                    <div class="kpi_sub">Budgeted Cost</div>
+                </div>
+
+                <!-- 5. Total Actual Cost -->
+                <div class="toptech_kpi_card kpi_rose">
+                    <div class="kpi_icon"><i class="fa fa-credit-card"></i></div>
+                    <div class="kpi_title">Total Actual Cost</div>
+                    <div class="kpi_value"><t t-esc="formatCurrency(state.kpi.total_actual_cost)"/></div>
+                    <div class="kpi_sub">Incurred Cost</div>
+                </div>
+
+                <!-- 6. Expected Profit -->
+                <div class="toptech_kpi_card kpi_emerald">
+                    <div class="kpi_icon"><i class="fa fa-bullseye"></i></div>
+                    <div class="kpi_title">Expected Profit</div>
+                    <div class="kpi_value"><t t-esc="formatCurrency(state.kpi.expected_profit)"/></div>
+                    <div class="kpi_sub">Planned Net Profit</div>
+                </div>
+
+                <!-- 7. Actual Profit -->
+                <div class="toptech_kpi_card kpi_emerald">
+                    <div class="kpi_icon"><i class="fa fa-trophy"></i></div>
+                    <div class="kpi_title">Actual Profit</div>
+                    <div class="kpi_value"><t t-esc="formatCurrency(state.kpi.actual_profit)"/></div>
+                    <div class="kpi_sub">Effective Net Profit</div>
+                </div>
+
+                <!-- 8. Average Margin -->
+                <div class="toptech_kpi_card kpi_blue">
+                    <div class="kpi_icon"><i class="fa fa-pie-chart"></i></div>
+                    <div class="kpi_title">Average Margin</div>
+                    <div class="kpi_value"><t t-esc="state.kpi.avg_margin"/>%</div>
+                    <div class="kpi_sub">Portfolio Profit Margin</div>
+                </div>
+
+                <!-- 9. Monthly Cost -->
+                <div class="toptech_kpi_card kpi_purple">
+                    <div class="kpi_icon"><i class="fa fa-calendar-check-o"></i></div>
+                    <div class="kpi_title">Monthly Burn Rate</div>
+                    <div class="kpi_value"><t t-esc="formatCurrency(state.kpi.monthly_cost)"/></div>
+                    <div class="kpi_sub">Average Monthly Spend</div>
+                </div>
+
+                <!-- 10. Projects Over Budget -->
+                <div class="toptech_kpi_card kpi_rose">
+                    <div class="kpi_icon"><i class="fa fa-exclamation-triangle"></i></div>
+                    <div class="kpi_title">Over Budget</div>
+                    <div class="kpi_value"><t t-esc="state.kpi.over_budget_count"/></div>
+                    <div class="kpi_sub">Requires Attention</div>
+                </div>
+            </div>
+
+            <!-- Per-Project Cost Summary Cards -->
+            <div class="toptech_section mb-4">
+                <div class="toptech_section_title">
+                    <span><i class="fa fa-th-large me-2 text-primary"></i>Per-Project Cost Summary Cards</span>
+                </div>
+                <div class="toptech_summary_cards_grid">
+                    <t t-foreach="state.projects" t-as="p" t-key="p.id">
+                        <div class="toptech_project_summary_card" t-on-click="() => this.openProject(p.id)" style="cursor: pointer;">
+                            <div class="card_header">
+                                <span class="prj_name"><t t-esc="p.name"/></span>
+                                <span t-attf-class="badge #{p.is_over_budget ? 'bg-danger' : 'bg-success'}">
+                                    <t t-esc="p.status"/>
+                                </span>
+                            </div>
+                            <div class="text-muted small"><i class="fa fa-user me-1"></i>Client: <t t-esc="p.client_name"/> | Ref: <t t-esc="p.reference"/></div>
+                            <div class="toptech_metric_row mt-3">
+                                <div class="toptech_metric_box">
+                                    <span>Contract</span>
+                                    <strong><t t-esc="formatCurrency(p.contract_value)"/></strong>
+                                </div>
+                                <div class="toptech_metric_box">
+                                    <span>Total Cost</span>
+                                    <strong class="text-danger"><t t-esc="formatCurrency(p.total_cost || p.actual_total_cost)"/></strong>
+                                </div>
+                                <div class="toptech_metric_box">
+                                    <span>Profit / Margin</span>
+                                    <strong class="text-success"><t t-esc="formatCurrency(p.project_profit)"/> (<t t-esc="p.project_margin"/>%)</strong>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between text-muted small mt-2 pt-2 border-top">
+                                <span>Duration: <strong><t t-esc="p.duration_months"/> mos</strong></span>
+                                <span t-if="p.is_over_budget" class="text-danger fw-bold"><i class="fa fa-warning"></i> Over Budget</span>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+
+            <!-- Project Master Table -->
+            <div class="toptech_section">
+                <div class="toptech_section_title">
+                    <span><i class="fa fa-list me-2 text-primary"></i>Project Master Financial Overview</span>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Reference</th>
+                                <th>Project Name</th>
+                                <th>Client</th>
+                                <th>Status</th>
+                                <th class="text-end">Contract Value</th>
+                                <th class="text-end">Planned Cost</th>
+                                <th class="text-end">Actual Cost</th>
+                                <th class="text-end">Profit</th>
+                                <th class="text-end">Margin %</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="state.projects" t-as="p" t-key="p.id">
+                                <tr>
+                                    <td><strong><t t-esc="p.reference"/></strong></td>
+                                    <td><span class="fw-bold text-dark"><t t-esc="p.name"/></span></td>
+                                    <td><t t-esc="p.client_name"/></td>
+                                    <td><span class="badge bg-secondary"><t t-esc="p.status"/></span></td>
+                                    <td class="text-end"><t t-esc="formatCurrency(p.contract_value)"/></td>
+                                    <td class="text-end"><t t-esc="formatCurrency(p.planned_total_cost)"/></td>
+                                    <td class="text-end text-danger"><t t-esc="formatCurrency(p.actual_total_cost || p.total_cost)"/></td>
+                                    <td class="text-end text-success fw-bold"><t t-esc="formatCurrency(p.project_profit)"/></td>
+                                    <td class="text-end"><t t-esc="p.project_margin"/>%</td>
+                                    <td class="text-center">
+                                        <button class="btn btn-sm btn-outline-primary" t-on-click="() => this.openProject(p.id)">
+                                            <i class="fa fa-eye"></i> View
+                                        </button>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

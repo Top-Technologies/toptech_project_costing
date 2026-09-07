@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_support_profitability_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="text-center mb-4">
+                            <h2 style="color: #1f4e78; font-weight: bold;">TopTech Support Phase Profitability Report</h2>
+                            <h4><span t-field="doc.name"/> (<span t-field="doc.reference"/>)</h4>
+                        </div>
+
+                        <table class="table table-bordered table-sm mt-3">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Support Agreement</th>
+                                    <th>Support Employee</th>
+                                    <th class="text-center">Months</th>
+                                    <th class="text-end">Monthly Revenue</th>
+                                    <th class="text-end">Total Revenue</th>
+                                    <th class="text-end">Monthly Cost</th>
+                                    <th class="text-end">Total Cost</th>
+                                    <th class="text-end">Support Profit</th>
+                                    <th class="text-end">Margin %</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="doc.support_ids" t-as="sup">
+                                    <tr>
+                                        <td><span t-field="sup.name"/></td>
+                                        <td><span t-field="sup.support_employee_name"/></td>
+                                        <td class="text-center"><span t-field="sup.number_of_months"/></td>
+                                        <td class="text-end"><span t-field="sup.monthly_support_revenue" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                                        <td class="text-end"><span t-field="sup.total_support_revenue" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                                        <td class="text-end"><span t-field="sup.monthly_support_cost" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                                        <td class="text-end"><span t-field="sup.total_support_cost" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                                        <td class="text-end fw-bold text-success"><span t-field="sup.support_profit" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                                        <td class="text-end fw-bold"><span t-field="sup.support_margin"/>%</td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

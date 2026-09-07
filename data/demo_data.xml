@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- 1. Worked Example Project: Dina ERP Implementation -->
+        <record id="demo_project_dina_erp" model="toptech.project.costing">
+            <field name="name">Dina ERP Implementation</field>
+            <field name="client_name">Dina Enterprises</field>
+            <field name="reference">PRJ-2026-0001</field>
+            <field name="contract_value">2000000.00</field>
+            <field name="start_date">2026-01-01</field>
+            <field name="planned_end_date">2026-04-30</field>
+            <field name="status">in_progress</field>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="notes">Core Odoo 19 ERP deployment for Dina Enterprises spanning 4 months.</field>
+        </record>
+
+        <!-- Resources for Dina ERP -->
+        <record id="demo_resource_pm" model="toptech.project.resource">
+            <field name="project_id" ref="demo_project_dina_erp"/>
+            <field name="name">Project Manager</field>
+            <field name="position">Senior Lead PM</field>
+            <field name="monthly_cost">120000.00</field>
+            <field name="allocation_percentage">100.0</field>
+            <field name="number_of_months">4.0</field>
+            <field name="planned_cost">480000.00</field>
+            <field name="actual_cost">480000.00</field>
+            <field name="cost_type">both</field>
+        </record>
+
+        <record id="demo_resource_tech_team" model="toptech.project.resource">
+            <field name="project_id" ref="demo_project_dina_erp"/>
+            <field name="name">Technical Team</field>
+            <field name="position">Developers &amp; System Engineers</field>
+            <field name="monthly_cost">90000.00</field>
+            <field name="allocation_percentage">100.0</field>
+            <field name="number_of_months">4.0</field>
+            <field name="planned_cost">360000.00</field>
+            <field name="actual_cost">360000.00</field>
+            <field name="cost_type">both</field>
+        </record>
+
+        <record id="demo_resource_domain_expert" model="toptech.project.resource">
+            <field name="project_id" ref="demo_project_dina_erp"/>
+            <field name="name">Domain Expert</field>
+            <field name="position">Business Analyst / Expert</field>
+            <field name="monthly_cost">40000.00</field>
+            <field name="allocation_percentage">100.0</field>
+            <field name="number_of_months">4.0</field>
+            <field name="planned_cost">160000.00</field>
+            <field name="actual_cost">160000.00</field>
+            <field name="cost_type">both</field>
+        </record>
+
+        <!-- Expenses for Dina ERP -->
+        <record id="demo_expense_travel" model="toptech.project.expense">
+            <field name="project_id" ref="demo_project_dina_erp"/>
+            <field name="expense_type">travel</field>
+            <field name="description">Onsite Client Workshop Travel &amp; Lodging</field>
+            <field name="amount">50000.00</field>
+            <field name="cost_type">actual</field>
+            <field name="date">2026-01-15</field>
+        </record>
+
+        <record id="demo_expense_software" model="toptech.project.expense">
+            <field name="project_id" ref="demo_project_dina_erp"/>
+            <field name="expense_type">software</field>
+            <field name="description">Development Tools &amp; Testing Licenses</field>
+            <field name="amount">50000.00</field>
+            <field name="cost_type">actual</field>
+            <field name="date">2026-02-01</field>
+        </record>
+
+        <!-- Overhead Pool & Allocation for Dina ERP -->
+        <record id="demo_overhead_pool_q1" model="toptech.project.overhead">
+            <field name="name">Q1 2026 Corporate Overhead Pool</field>
+            <field name="date_start">2026-01-01</field>
+            <field name="date_end">2026-04-30</field>
+            <field name="rent">40000.00</field>
+            <field name="electricity">20000.00</field>
+            <field name="internet">20000.00</field>
+            <field name="administration">60000.00</field>
+        </record>
+
+        <record id="demo_overhead_alloc_dina" model="toptech.project.overhead.allocation">
+            <field name="overhead_id" ref="demo_overhead_pool_q1"/>
+            <field name="project_id" ref="demo_project_dina_erp"/>
+            <field name="allocation_method">resource_cost</field>
+            <field name="allocation_percentage">100.0</field>
+            <field name="allocated_amount">140000.00</field>
+            <field name="cost_type">actual</field>
+            <field name="notes">Allocated corporate overhead (80,000 overhead + 60,000 administration = 140,000).</field>
+        </record>
+
+        <!-- Monthly Breakdown Lines for Dina ERP -->
+        <record id="demo_monthly_dina_m1" model="toptech.project.monthly.cost">
+            <field name="project_id" ref="demo_project_dina_erp"/>
+            <field name="month_date">2026-01-01</field>
+            <field name="salary_cost">250000.00</field>
+            <field name="expense_cost">50000.00</field>
+            <field name="overhead_cost">35000.00</field>
+            <field name="cost_type">actual</field>
+        </record>
+        <record id="demo_monthly_dina_m2" model="toptech.project.monthly.cost">
+            <field name="project_id" ref="demo_project_dina_erp"/>
+            <field name="month_date">2026-02-01</field>
+            <field name="salary_cost">250000.00</field>
+            <field name="expense_cost">50000.00</field>
+            <field name="overhead_cost">35000.00</field>
+            <field name="cost_type">actual</field>
+        </record>
+        <record id="demo_monthly_dina_m3" model="toptech.project.monthly.cost">
+            <field name="project_id" ref="demo_project_dina_erp"/>
+            <field name="month_date">2026-03-01</field>
+            <field name="salary_cost">250000.00</field>
+            <field name="expense_cost">0.00</field>
+            <field name="overhead_cost">35000.00</field>
+            <field name="cost_type">actual</field>
+        </record>
+        <record id="demo_monthly_dina_m4" model="toptech.project.monthly.cost">
+            <field name="project_id" ref="demo_project_dina_erp"/>
+            <field name="month_date">2026-04-01</field>
+            <field name="salary_cost">250000.00</field>
+            <field name="expense_cost">0.00</field>
+            <field name="overhead_cost">35000.00</field>
+            <field name="cost_type">actual</field>
+        </record>
+
+        <!-- Post-Implementation Support for Dina ERP -->
+        <record id="demo_support_dina" model="toptech.project.support">
+            <field name="project_id" ref="demo_project_dina_erp"/>
+            <field name="name">Dina ERP Year 1 SLA Support</field>
+            <field name="support_start_date">2026-05-01</field>
+            <field name="support_end_date">2027-04-30</field>
+            <field name="number_of_months">12.0</field>
+            <field name="monthly_support_revenue">50000.00</field>
+            <field name="support_employee_name">Support Specialist</field>
+            <field name="support_employee_monthly_cost">20000.00</field>
+            <field name="support_allocation_percentage">100.0</field>
+            <field name="support_overhead">5000.00</field>
+        </record>
+
+        <!-- 2. Second Demo Project: Alpha Cloud Infrastructure -->
+        <record id="demo_project_alpha_cloud" model="toptech.project.costing">
+            <field name="name">Alpha Cloud Migration</field>
+            <field name="client_name">Alpha Global Logistics</field>
+            <field name="reference">PRJ-2026-0002</field>
+            <field name="contract_value">1500000.00</field>
+            <field name="start_date">2026-02-01</field>
+            <field name="planned_end_date">2026-07-31</field>
+            <field name="status">in_progress</field>
+            <field name="user_id" ref="base.user_admin"/>
+        </record>
+
+        <record id="demo_resource_alpha_lead" model="toptech.project.resource">
+            <field name="project_id" ref="demo_project_alpha_cloud"/>
+            <field name="name">Cloud Architect</field>
+            <field name="position">Lead Architect</field>
+            <field name="monthly_cost">110000.00</field>
+            <field name="allocation_percentage">100.0</field>
+            <field name="number_of_months">6.0</field>
+            <field name="planned_cost">660000.00</field>
+            <field name="actual_cost">660000.00</field>
+            <field name="cost_type">both</field>
+        </record>
+    </data>
+</odoo>

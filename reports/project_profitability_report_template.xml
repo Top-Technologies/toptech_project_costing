@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_project_profitability_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="text-center mb-4">
+                            <h2 style="color: #1f4e78; font-weight: bold;">TopTech Project Profitability Report</h2>
+                            <p class="text-muted">Generated on <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/></p>
+                        </div>
+
+                        <div class="row mb-3 p-3" style="background-color: #f8f9fa; border-radius: 6px; border: 1px solid #dee2e6;">
+                            <div class="col-6">
+                                <strong>Project:</strong> <span t-field="doc.name"/><br/>
+                                <strong>Reference:</strong> <span t-field="doc.reference"/><br/>
+                                <strong>Client:</strong> <span t-field="doc.client_name"/>
+                            </div>
+                            <div class="col-6">
+                                <strong>Project Manager:</strong> <span t-field="doc.user_id.name"/><br/>
+                                <strong>Status:</strong> <span t-field="doc.status"/><br/>
+                                <strong>Duration:</strong> <span t-field="doc.duration_months"/> Months
+                            </div>
+                        </div>
+
+                        <h4 style="color: #2e75b6;" class="mt-4">Financial Summary</h4>
+                        <table class="table table-bordered table-sm mt-2">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Cost Component</th>
+                                    <th class="text-end">Planned Amount</th>
+                                    <th class="text-end">Actual Amount</th>
+                                    <th class="text-end">Effective Total</th>
+                                    <th class="text-end">Variance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Resource / Salary Costs</td>
+                                    <td class="text-end"><span t-field="doc.planned_resource_cost" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                                    <td class="text-end"><span t-field="doc.actual_resource_cost" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                                    <td class="text-end"><span t-field="doc.resource_cost" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                                    <td class="text-end"><span t-field="doc.resource_cost_variance" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                                </tr>
+                                <tr>
+                                    <td>Direct Expenses</td>
+                                    <td class="text-end"><span t-field="doc.planned_expense_cost" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                                    <td class="text-end"><span t-field="doc.actual_expense_cost" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                                    <td class="text-end"><span t-field="doc.expense_cost" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                                    <td class="text-end"><span t-field="doc.expense_cost_variance" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                                </tr>
+                                <tr>
+                                    <td>Allocated Overhead</td>
+                                    <td class="text-end"><span t-field="doc.planned_overhead_cost" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                                    <td class="text-end"><span t-field="doc.actual_overhead_cost" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                                    <td class="text-end"><span t-field="doc.overhead_cost" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                                    <td class="text-end"><span t-field="doc.overhead_cost_variance" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                                </tr>
+                                <tr class="table-primary fw-bold">
+                                    <td>Total Project Cost</td>
+                                    <td class="text-end"><span t-field="doc.planned_total_cost" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                                    <td class="text-end"><span t-field="doc.actual_total_cost" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                                    <td class="text-end"><span t-field="doc.total_cost" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                                    <td class="text-end"><span t-field="doc.total_cost_variance" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h4 style="color: #2e75b6;" class="mt-4">Profitability &amp; Margins</h4>
+                        <table class="table table-bordered table-sm mt-2">
+                            <tbody>
+                                <tr>
+                                    <td class="fw-bold">Contract Value</td>
+                                    <td class="text-end fw-bold"><span t-field="doc.contract_value" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold">Total Cost</td>
+                                    <td class="text-end text-danger"><span t-field="doc.total_cost" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                                </tr>
+                                <tr class="table-success fw-bold">
+                                    <td>Net Project Profit</td>
+                                    <td class="text-end"><span t-field="doc.project_profit" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                                </tr>
+                                <tr class="table-info fw-bold">
+                                    <td>Project Profit Margin (%)</td>
+                                    <td class="text-end"><span t-field="doc.project_margin"/>%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_toptech_project_support_form" model="ir.ui.view">
+        <field name="name">toptech.project.support.form</field>
+        <field name="model">toptech.project.support</field>
+        <field name="arch" type="xml">
+            <form string="Post-Implementation Support Costing">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="Support Agreement Name..."/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Project &amp; Schedule">
+                            <field name="project_id"/>
+                            <field name="support_start_date"/>
+                            <field name="support_end_date"/>
+                            <field name="number_of_months"/>
+                        </group>
+                        <group string="Revenue &amp; Cost Parameters">
+                            <field name="monthly_support_revenue" widget="monetary"/>
+                            <field name="support_employee_name"/>
+                            <field name="support_employee_monthly_cost" widget="monetary"/>
+                            <field name="support_allocation_percentage"/>
+                            <field name="support_overhead" widget="monetary"/>
+                        </group>
+                    </group>
+                    <group string="Support Financial Summary">
+                        <group>
+                            <field name="monthly_support_cost" widget="monetary"/>
+                            <field name="total_support_revenue" widget="monetary"/>
+                            <field name="total_support_cost" widget="monetary"/>
+                        </group>
+                        <group>
+                            <field name="support_profit" widget="monetary" decoration-success="support_profit &gt; 0" decoration-danger="support_profit &lt; 0"/>
+                            <field name="support_margin" decoration-success="support_margin &gt; 20" decoration-danger="support_margin &lt; 0"/>
+                        </group>
+                    </group>
+                    <field name="notes" placeholder="Support SLA terms or notes..."/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_toptech_project_support_list" model="ir.ui.view">
+        <field name="name">toptech.project.support.list</field>
+        <field name="model">toptech.project.support</field>
+        <field name="arch" type="xml">
+            <list string="Support Costing" editable="bottom">
+                <field name="project_id"/>
+                <field name="name"/>
+                <field name="support_start_date"/>
+                <field name="support_end_date"/>
+                <field name="number_of_months"/>
+                <field name="monthly_support_revenue" widget="monetary"/>
+                <field name="support_employee_name"/>
+                <field name="support_employee_monthly_cost" widget="monetary"/>
+                <field name="support_allocation_percentage"/>
+                <field name="monthly_support_cost" widget="monetary"/>
+                <field name="support_overhead" widget="monetary"/>
+                <field name="total_support_revenue" widget="monetary"/>
+                <field name="total_support_cost" widget="monetary"/>
+                <field name="support_profit" widget="monetary"/>
+                <field name="support_margin"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_toptech_project_support" model="ir.actions.act_window">
+        <field name="name">Support Costing</field>
+        <field name="res_model">toptech.project.support</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

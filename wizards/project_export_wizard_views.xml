@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_toptech_project_export_wizard_form" model="ir.ui.view">
+        <field name="name">toptech.project.export.wizard.form</field>
+        <field name="model">toptech.project.export.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Export Project Reports to Excel">
+                <sheet>
+                    <group>
+                        <group string="Report Configuration">
+                            <field name="report_type"/>
+                        </group>
+                    </group>
+                    <group string="Projects (Optional Filter)">
+                        <field name="project_ids" widget="many2many_tags" placeholder="Select projects or leave empty for all..."/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Download Excel File (.xlsx)" type="object" name="action_export_excel" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_toptech_project_export_wizard" model="ir.actions.act_window">
+        <field name="name">Export to Excel</field>
+        <field name="res_model">toptech.project.export.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

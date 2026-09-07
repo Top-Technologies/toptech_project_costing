@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Top-level Root Menu -->
+    <menuitem id="toptech_project_costing_root_menu"
+              name="Project Costing"
+              web_icon="toptech_project_costing,static/description/icon.png"
+              sequence="10"/>
+
+    <!-- 1. Dashboard Menu -->
+    <menuitem id="menu_project_costing_dashboard"
+              name="Dashboard"
+              parent="toptech_project_costing_root_menu"
+              action="action_toptech_project_costing_dashboard"
+              sequence="1"/>
+
+    <!-- 2. Projects Menu -->
+    <menuitem id="menu_project_costing_projects"
+              name="Projects"
+              parent="toptech_project_costing_root_menu"
+              action="action_toptech_project_costing"
+              sequence="2"/>
+
+    <!-- 3. Project Resources Menu -->
+    <menuitem id="menu_project_costing_resources"
+              name="Project Resources"
+              parent="toptech_project_costing_root_menu"
+              action="action_toptech_project_resource"
+              sequence="3"/>
+
+    <!-- 4. Project Expenses Menu -->
+    <menuitem id="menu_project_costing_expenses"
+              name="Project Expenses"
+              parent="toptech_project_costing_root_menu"
+              action="action_toptech_project_expense"
+              sequence="4"/>
+
+    <!-- 5. Overheads Menu & Submenus -->
+    <menuitem id="menu_project_costing_overheads_root"
+              name="Overheads"
+              parent="toptech_project_costing_root_menu"
+              sequence="5"/>
+
+    <menuitem id="menu_project_costing_monthly_overheads"
+              name="Monthly Overheads Pool"
+              parent="menu_project_costing_overheads_root"
+              action="action_toptech_project_overhead"
+              sequence="1"/>
+
+    <menuitem id="menu_project_costing_overhead_allocations"
+              name="Overhead Allocations"
+              parent="menu_project_costing_overheads_root"
+              action="action_toptech_project_overhead_allocation"
+              sequence="2"/>
+
+    <!-- 6. Support Menu -->
+    <menuitem id="menu_project_costing_support"
+              name="Support"
+              parent="toptech_project_costing_root_menu"
+              action="action_toptech_project_support"
+              sequence="6"/>
+
+    <!-- 7. Reports Menu & Submenus -->
+    <!-- Note: PDF reports are triggered from form/list "Print" buttons.         -->
+    <!-- Menu items here open the relevant list/form views for report generation. -->
+    <menuitem id="menu_project_costing_reports_root"
+              name="Reports"
+              parent="toptech_project_costing_root_menu"
+              sequence="7"/>
+
+    <menuitem id="menu_report_project_profitability"
+              name="Project Profitability"
+              parent="menu_project_costing_reports_root"
+              action="action_toptech_project_costing"
+              sequence="1"/>
+
+    <menuitem id="menu_report_resource_cost"
+              name="Resource Cost Report"
+              parent="menu_project_costing_reports_root"
+              action="action_toptech_project_resource"
+              sequence="2"/>
+
+    <menuitem id="menu_report_monthly_cost"
+              name="Monthly Cost Report"
+              parent="menu_project_costing_reports_root"
+              action="action_toptech_project_monthly_cost"
+              sequence="3"/>
+
+    <menuitem id="menu_report_overhead_allocation"
+              name="Overhead Allocation Report"
+              parent="menu_project_costing_reports_root"
+              action="action_toptech_project_overhead_allocation"
+              sequence="4"/>
+
+    <menuitem id="menu_report_support_profitability"
+              name="Support Profitability"
+              parent="menu_project_costing_reports_root"
+              action="action_toptech_project_support"
+              sequence="5"/>
+
+    <menuitem id="menu_report_project_comparison"
+              name="Project Comparison"
+              parent="menu_project_costing_reports_root"
+              action="action_toptech_project_comparison_wizard"
+              sequence="6"/>
+
+    <menuitem id="menu_report_export_excel"
+              name="Export to Excel"
+              parent="menu_project_costing_reports_root"
+              action="action_toptech_project_export_wizard"
+              sequence="7"/>
+
+    <!-- 8. Configuration Menu — visible to Managers only -->
+    <menuitem id="menu_project_costing_config_root"
+              name="Configuration"
+              parent="toptech_project_costing_root_menu"
+              sequence="8"
+              groups="toptech_project_costing.group_project_costing_manager"/>
+
+    <menuitem id="menu_config_monthly_cost_breakdown"
+              name="Monthly Cost Lines"
+              parent="menu_project_costing_config_root"
+              action="action_toptech_project_monthly_cost"
+              sequence="1"/>
+
+</odoo>

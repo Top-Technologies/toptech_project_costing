@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_toptech_project_expense_form" model="ir.ui.view">
+        <field name="name">toptech.project.expense.form</field>
+        <field name="model">toptech.project.expense</field>
+        <field name="arch" type="xml">
+            <form string="Direct Project Expense">
+                <sheet>
+                    <group>
+                        <group string="Expense Basic Info">
+                            <field name="project_id"/>
+                            <field name="expense_type"/>
+                            <field name="description"/>
+                            <field name="date"/>
+                        </group>
+                        <group string="Financials">
+                            <field name="cost_type"/>
+                            <field name="amount" widget="monetary"/>
+                            <field name="planned_amount" widget="monetary"/>
+                            <field name="actual_amount" widget="monetary"/>
+                        </group>
+                    </group>
+                    <field name="notes" placeholder="Expense receipts or notes..."/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_toptech_project_expense_list" model="ir.ui.view">
+        <field name="name">toptech.project.expense.list</field>
+        <field name="model">toptech.project.expense</field>
+        <field name="arch" type="xml">
+            <list string="Direct Project Expenses" editable="bottom">
+                <field name="date"/>
+                <field name="project_id"/>
+                <field name="expense_type"/>
+                <field name="description"/>
+                <field name="cost_type"/>
+                <field name="amount" widget="monetary"/>
+                <field name="planned_amount" widget="monetary"/>
+                <field name="actual_amount" widget="monetary"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_toptech_project_expense_search" model="ir.ui.view">
+        <field name="name">toptech.project.expense.search</field>
+        <field name="model">toptech.project.expense</field>
+        <field name="arch" type="xml">
+            <search string="Search Expenses">
+                <field name="description"/>
+                <field name="project_id"/>
+                <field name="expense_type"/>
+                <group>
+                    <filter string="Project" name="group_project" context="{'group_by': 'project_id'}"/>
+                    <filter string="Expense Type" name="group_type" context="{'group_by': 'expense_type'}"/>
+                    <filter string="Cost Type" name="group_cost_type" context="{'group_by': 'cost_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_toptech_project_expense" model="ir.actions.act_window">
+        <field name="name">Project Expenses</field>
+        <field name="res_model">toptech.project.expense</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_toptech_project_expense_search"/>
+    </record>
+</odoo>
